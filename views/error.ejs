@@ -1,29 +1,15 @@
 <!DOCTYPE html>
 <html lang='en'>
 
-<head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <title>Page Error</title>
-</head>
+<%- include('./partials/head.ejs') %>
 
-<body>
-    <nav>
-        <div class="nav-wrapper container">
-            <a href="/" class="brand-logo">Logo</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="./add-item">Add item</a></li>
-
-            </ul>
-        </div>
-    </nav>
-    <div class="container center-align">
-        <i class="large material-icons prefix">sentiment_very_dissatisfied</i>
-        <h1>Oops</h1>
-        <h3>404 - PAGE NOT FOUND</h3>
-    </div>
-</body>
+    <body>
+        <%- include('./partials/nav.ejs') %>
+            <div class="container center-align">
+                <i class="large material-icons prefix">sentiment_very_dissatisfied</i>
+                <h1>Oops</h1>
+                <h3>404 - PAGE NOT FOUND</h3>
+            </div>
+    </body>
 
 </html>

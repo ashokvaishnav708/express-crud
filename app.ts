@@ -16,13 +16,18 @@ app.listen(port, (error) => {
 
 
 app.get('/', (req, res) => {
-    res.render('index', { root });
+    const items: { name: string; price: number }[] = [
+            { name: 'mobile phone', price: 1000 }, 
+            { name: 'book', price: 30 }, 
+            { name: 'computer', price: 2000 }
+        ];
+    res.render('index', { items });
 });
 
 app.get('/add-item', (req, res) => {
-    res.render('add-item', { root })
+    res.render('add-item')
 });
 
 app.use((req, res) => {
-    res.render('error', { root });
+    res.render('error');
 });
