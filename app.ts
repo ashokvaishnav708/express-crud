@@ -1,7 +1,8 @@
 import express from 'express';
-const app = express();
 
+const app = express();
 const port: number = 3000;
+const root = import.meta.dirname;
 
 app.listen(port, (error) => {
     if (error) {
@@ -13,9 +14,13 @@ app.listen(port, (error) => {
 
 
 app.get('/', (req, res) => {
-    res.send('<h1>Home page</h1>');
+    res.sendFile('./views/index.html', { root });
 });
 
 app.get('/add-item', (req, res) => {
-    res.send('<h1>Add items</h1>')
+    res.sendFile('./views/add-item.html', { root })
+});
+
+app.use((req, res) => {
+    res.sendFile('./views/error.html', { root });
 });
