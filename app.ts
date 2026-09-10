@@ -4,6 +4,8 @@ const app = express();
 const port: number = 3000;
 const root = import.meta.dirname;
 
+app.set('view engine', 'ejs');
+
 app.listen(port, (error) => {
     if (error) {
         console.log("Error: ", error);
@@ -14,13 +16,13 @@ app.listen(port, (error) => {
 
 
 app.get('/', (req, res) => {
-    res.sendFile('./views/index.html', { root });
+    res.render('index', { root });
 });
 
 app.get('/add-item', (req, res) => {
-    res.sendFile('./views/add-item.html', { root })
+    res.render('add-item', { root })
 });
 
 app.use((req, res) => {
-    res.sendFile('./views/error.html', { root });
+    res.render('error', { root });
 });
