@@ -3,28 +3,73 @@
 
 <%- include('./partials/head.ejs') %>
 
-    <body>
-        <% const title='some title' %>
-            <%- include('./partials/nav.ejs') %>
-                <div class="container">
-                    <ul class="collection with-header">
-                        <% if (items.length) { %>
-                            <% items.forEach((item)=> { %>
-                                <li class="collection-item">
-                                    <div>
-                                        <%= item.name %> $<%= item.price %>
-                                                <a href="#!" class="secondary-content">
-                                                    <i class="material-icons">delete</i>
-                                                    <i class="material-icons">edit</i>
-                                                </a>
-                                    </div>
-                                </li>
-                                <% }); %>
-                                    <% } else { %>
-                                        <li class="collection-item">There are no items</li>
-                                        <% } %>
-                    </ul>
-                </div>
-    </body>
+	<body>
+		<% const title='some title' %>
+			<%- include('./partials/nav.ejs') %>
+				<div class="container">
+					<ul class="collection with-header">
+						<% if (items.length) { %>
+							<% items.forEach((item)=> { %>
+								<li class="collection-item">
+									<div><a href="/items/<%= item._id %>">
+											<%= item.name %> $<%= item.price %>
+										</a>
+										<div class="secondary-content">
+											<i id="deleteIcon" class="material-icons" data-id="<%= item._id %>"
+												style="cursor: pointer;">delete</i>
+											<i class="material-icons modal-trigger" style="cursor: pointer;" href="#editItemModal">edit</i>
+										</div>
+									</div>
+								</li>
+								<% }); %>
+									<% } else { %>
+										<li class="collection-item">There are no items</li>
+										<% } %>
+					</ul>
+				</div>
+				<div id="editItemModal" class="modal">
+					<div class="modal-content">
+						<h4>Edit Form</h4>
+						<form id="edit_form" action="">
+							<input id="name" name="name" placeholder="Item name">
+							<input id="price" name="price" placeholder="Item price">
+							<btn class="btn" type="submit">Update</btn>
+						</form>
+					</div>
+				</div>
+	</body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var elems = document.querySelectorAll('.modal');
+			var instances = M.Modal.init(elems);
+		});
+
+		deleteIcon.onclick = function (e) {
+			e.preventDefault();
+			const id = deleteIcon.dataset.id;
+			const deleteEndPoint = `/items/${id}`
+			fetch(deleteEndPoint, { method: 'DELETE' }).then((result) => {
+				result.json().then((value) => window.location.href = value.redirect);
+			}).catch(err => console.log(err));
+		}
+
+		edit_form.onsubmit = async function (e) {
+			e.preventDefault();
+			let data = new FormData(edit_form);
+
+			let response = await fetch(`/items/${updateId}`, {
+				method: 'PUT',
+				body: new URLSearchParams(data),
+				headers: new Headers({ 'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8' })
+			});
+
+			let result = await response.json();
+			edit_form.reset();
+			window.location.reload();
+			alert(result.msg);
+		}
+
+	</script>
 
 </html>

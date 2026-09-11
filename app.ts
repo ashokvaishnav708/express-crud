@@ -63,6 +63,13 @@ app.delete("/items/:id", (req, res) => {
     .catch((err) => console.log(err));
 });
 
+app.put("/items/:id", (req, res) => {
+  const id = req.params.id;
+  Item.findByIdAndUpdate(id, req.body)
+    .then(() => res.json({ msg: "Updated Successfully" }))
+    .catch((err) => console.log(err));
+});
+
 app.use((req, res) => {
   res.render("error");
 });
