@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 const port: number = 3000;
 
 mongoose
-  .connect(mongodbConnString)
+  .connect(mongodbConnString || "")
   .then(() => console.log("Connected to mongoDB"))
   .catch((err) => console.log("Error connecting to mongoDB: ", err));
 
@@ -44,16 +44,23 @@ app.post("/create-item", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  const items: { name: string; price: number }[] = [
-    { name: "mobile phone", price: 1000 },
-    { name: "book", price: 30 },
-    { name: "computer", price: 2000 },
-  ];
   res.redirect("/get-items");
 });
 
 app.get("/add-item", (req, res) => {
   res.render("add-item");
+});
+
+app.get("/items/:id", (req, res) => {
+  const id = req.params.id;
+  Item.findById(id).then((item) => res.render("item-detail", { item }));
+});
+
+app.delete("/items/:id", (req, res) => {
+  const id = req.params.id;
+  Item.findByIdAndDelete(id)
+    .then(() => res.json({ redirect: "/get-items" }))
+    .catch((err) => console.log(err));
 });
 
 app.use((req, res) => {
