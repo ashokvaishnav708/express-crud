@@ -1,13 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+import { Item } from "./models/items";
 
 dotenv.config();
+const mongodbConnString = process.env.MONGODB_CONN_STRING;
 
 const app = express();
 const port: number = 3000;
-
-const mongodbConnString = process.env.MONGODB_CONN_STRING;
 
 mongoose
   .connect(mongodbConnString)
@@ -22,6 +22,12 @@ app.listen(port, (error) => {
   } else {
     console.log(`Server started on localhost at port ${port}`);
   }
+});
+
+app.get("/create-item", (req, res) => {
+  const item = new Item({ name: "computer", price: 2000 });
+
+  item.save().then((result) => res.send(result));
 });
 
 app.get("/", (req, res) => {
