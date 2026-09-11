@@ -24,6 +24,14 @@ app.listen(port, (error) => {
   }
 });
 
+app.get("/get-items", (req, res) => {
+  Item.find()
+    .then((items) => {
+      res.render("index", { items });
+    })
+    .catch((err) => console.log(err));
+});
+
 app.get("/create-item", (req, res) => {
   const item = new Item({ name: "computer", price: 2000 });
 
@@ -36,7 +44,7 @@ app.get("/", (req, res) => {
     { name: "book", price: 30 },
     { name: "computer", price: 2000 },
   ];
-  res.render("index", { items });
+  res.redirect("/get-items");
 });
 
 app.get("/add-item", (req, res) => {
