@@ -7,6 +7,9 @@ dotenv.config();
 const mongodbConnString = process.env.MONGODB_CONN_STRING;
 
 const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+
 const port: number = 3000;
 
 mongoose
@@ -32,10 +35,12 @@ app.get("/get-items", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-app.get("/create-item", (req, res) => {
-  const item = new Item({ name: "computer", price: 2000 });
-
-  item.save().then((result) => res.send(result));
+app.post("/create-item", (req, res) => {
+  const item = new Item(req.body);
+  item
+    .save()
+    .then(() => res.redirect("/"))
+    .catch((err) => console.log(err));
 });
 
 app.get("/", (req, res) => {
